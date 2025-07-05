@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
-class Caloriecard extends StatelessWidget {
+class Caloriecard extends StatefulWidget {
   final String calories;
   final String label;
-  final String mealdisplay;
+  final List<String> mealList;
 
   const Caloriecard({
     required this.calories,
     required this.label,
-    required this.mealdisplay,
+    required this.mealList,
     super.key});
+
+  @override
+  State<Caloriecard> createState() => _CaloriecardState();
+}
+
+class _CaloriecardState extends State<Caloriecard> {
+
+  String selectedMeal = 'Tap any card to see a meal suggestion';
+
+  void updateMeal() {
+    final random = Random();
+    int index = random.nextInt(widget.mealList.length);
+
+    setState(() {
+      selectedMeal = widget.mealList[index];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +37,20 @@ class Caloriecard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(50.0),
               child: TextButton(
-                onPressed: () {}, 
-                child: Text(calories),
+                onPressed: updateMeal,
+                child: Text(widget.calories),
               ),
             ),
           ),
           SizedBox(
             height: 8,
           ),
-           Text(label),
+           Text(widget.label),
            Padding(
              padding: const EdgeInsets.all(8.0),
-             child: Text(mealdisplay),
+             child: Text(selectedMeal),
            ),
-              ],
+            ],
           );
   }
 }
